@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block title %}Збережене — Словопростір{% endblock %}
+{% block content %}<section class="container workspace"><div class="eyebrow">ТВОЯ ПОЛИЦЯ</div><h1>Повернутися до важливого<span class="green">.</span></h1><p class="subtle page-intro">Історії, які ти зберіг для себе. {{ articles|length }} у колекції.</p>{% if articles %}<div class="article-grid">{% for item in articles %}{% include '_card.html' %}{% endfor %}</div>{% else %}<div class="empty-state"><span>▤</span><h3>Тут будуть улюблені історії</h3><p>Натисни «Зберегти» на сторінці статті, щоб повернутися до неї пізніше.</p><a class="button" href="{{ url_for('index') }}#articles">Знайти історію ↗</a></div>{% endif %}</section>{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}{{ 'Приєднатися' if mode == 'register' else 'Увійти' }} — Словопростір{% endblock %}
+{% block content %}
+<section class="container auth-layout"><div class="auth-intro"><div class="eyebrow">СВОЇ СЕРЕД СЛІВ</div><h1>Тут є місце<br>для <em>твого голосу.</em></h1><p>Один обліковий запис, щоб читати, зберігати улюблене та ділитися власними історіями.</p><div class="auth-symbol" aria-hidden="true">“</div><p class="auth-note">Великі розмови починаються<br>з однієї щирої думки.</p></div>
+<div class="form-panel"><h2>{{ 'Створи обліковий запис' if mode == 'register' else 'З поверненням!' }}</h2><p class="subtle">{{ 'Долучайся до спільноти читачів і авторів.' if mode == 'register' else 'Твої історії чекають на продовження.' }}</p><form method="post" class="stack-form"><input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+{% if mode == 'register' %}<label>Твоє ім’я<input name="name" required minlength="2" maxlength="60" autocomplete="name" value="{{ request.form.get('name', '') }}" placeholder="Як до тебе звертатися?"></label>{% endif %}
+<label>Електронна адреса<input type="email" name="email" required maxlength="254" autocomplete="email" value="{{ request.form.get('email', '') }}" placeholder="you@example.com"></label>
+<label>Пароль<div class="password-field"><input type="password" name="password" id="password" required {% if mode == 'register' %}minlength="8"{% endif %} maxlength="128" autocomplete="{{ 'new-password' if mode == 'register' else 'current-password' }}" placeholder="{{ 'Щонайменше 8 символів' if mode == 'register' else 'Введи свій пароль' }}"><button type="button" data-password="password" aria-label="Показати пароль" aria-pressed="false">◉</button></div></label>
+{% if mode == 'register' %}<label>Повтори пароль<input type="password" name="confirm_password" required minlength="8" maxlength="128" autocomplete="new-password" placeholder="Ще раз, щоб не помилитися"></label>{% endif %}
+<button class="button full" type="submit">{{ 'Приєднатися' if mode == 'register' else 'Увійти' }} <span>↗</span></button></form>
+<p class="form-switch">{% if mode == 'register' %}Уже маєш обліковий запис? <a href="{{ url_for('login') }}">Увійти</a>{% else %}Ще не з нами? <a href="{{ url_for('register') }}">Зареєструватися</a>{% endif %}</p></div></section>
+{% endblock %}

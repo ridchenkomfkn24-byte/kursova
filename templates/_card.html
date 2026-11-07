@@ -1,0 +1,7 @@
+<article class="article-card">
+  <a class="cover {{ item.cover }}" href="{{ url_for('article_detail', article_id=item.id) }}" tabindex="-1" aria-hidden="true"><span class="cover-orbit"></span><span class="cover-sheet"><i></i><i></i><i></i><b>с.</b></span><span class="cover-spark">✳</span><span class="cover-label">{{ item.category }}</span></a>
+  <div class="card-meta"><a href="{{ url_for('index', category=item.category) }}">{{ item.category }}</a><span>{{ item.content|reading_time }} хв читання</span></div>
+  <h3><a href="{{ url_for('article_detail', article_id=item.id) }}">{{ item.title }}</a></h3>
+  <p class="card-summary">{{ item.summary }}</p>
+  <div class="card-author"><a class="avatar" href="{{ url_for('author_blog', author_id=item.author_id) }}" aria-label="Блог автора {{ item.author_name }}">{{ item.author_name[0] }}</a><div><span><a href="{{ url_for('author_blog', author_id=item.author_id) }}">{{ item.author_name }}</a></span><time datetime="{{ item.created_at[:10] }}">{{ item.created_at|date_uk }}</time></div><a class="card-arrow" href="{{ url_for('article_detail', article_id=item.id) }}" aria-label="Читати: {{ item.title }}">↗</a></div>
+</article>

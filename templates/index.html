@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="container hero">
+  <div class="hero-copy"><div class="eyebrow"><span class="live-dot"></span>ПРОСТІР ДЛЯ ДОПИТЛИВИХ</div><h1>Історії, що<br>залишають <em>слід.</em></h1><p>Читай про те, що захоплює. Ділися тим, що важливо.<br class="desktop-break"> Знаходь своїх людей між рядками.</p><div class="hero-actions"><a class="button" href="#articles">Знайти свою історію <span>↓</span></a><a class="plain-link" href="{{ url_for('editor') if current_user else url_for('register') }}">Стати автором ↗</a></div><div class="hero-stats"><span><b>{{ stats.articles }}</b> {{ stats.articles|plural_uk('історія', 'історії', 'історій') }} для відкриттів</span><span class="stats-divider"></span><span><b>{{ stats.authors }}</b> {{ stats.authors|plural_uk('автор', 'автори', 'авторів') }} спільноти</span></div></div>
+  <div class="hero-art" aria-hidden="true"><div class="art-topline">ТВОЇ ДУМКИ МАЮТЬ ЗНАЧЕННЯ <span>↗</span></div><div class="art-ring ring-one"></div><div class="art-ring ring-two"></div><div class="art-page back-page"></div><div class="art-page front-page"><span class="art-page-meta">НОВА ІСТОРІЯ · 01</span><span class="art-letter">Аа</span><div class="art-lines"><i></i><i></i><i></i></div><span class="art-page-bottom">Зі слів починається більше.</span></div><span class="art-star">✳</span><span class="art-caption">ЧИТАЙ. ВІДЧУВАЙ. СТВОРЮЙ.</span></div>
+</section>
+<section class="container feed" id="articles">
+  <div class="section-heading"><div><div class="eyebrow">ВАРТЕ ТВОЄЇ УВАГИ</div><h2>{{ 'Результати пошуку' if query else 'Відкрий щось нове' }}</h2></div><span class="subtle">{{ total }} {{ total|plural_uk('публікація', 'публікації', 'публікацій') }}</span></div>
+  <form class="search-toolbar" method="get" action="{{ url_for('index') }}#articles" role="search">
+    <div class="search-field"><span aria-hidden="true">⌕</span><input aria-label="Пошук статей" type="search" name="q" placeholder="Знайти історію, тему або автора…" value="{{ query }}" maxlength="150"><button type="submit" class="search-button">Шукати</button></div>
+    {% if category %}<input type="hidden" name="category" value="{{ category }}">{% endif %}
+    <label class="sort-label">Порядок<select name="sort" id="sort"><option value="new" {{ 'selected' if sort != 'old' }}>Спочатку нові</option><option value="old" {{ 'selected' if sort == 'old' }}>Спочатку давніші</option></select></label>
+  </form>
+  <div class="category-list" aria-label="Категорії"><a class="chip {{ 'selected' if not category }}" href="{{ url_for('index', q=query, sort=sort) }}#articles">Усі історії</a>{% for name in categories %}<a class="chip {{ 'selected' if category == name }}" href="{{ url_for('index', category=name, q=query, sort=sort) }}#articles">{{ name }}</a>{% endfor %}</div>
+  {% if articles %}<div class="article-grid">{% for item in articles %}{% include '_card.html' %}{% endfor %}</div>{% else %}<div class="empty-state"><span>⌕</span><h3>Поки що тихо</h3><p>За цим запитом статей немає. Спробуй інші слова або категорію.</p><a class="button outline" href="{{ url_for('index') }}#articles">Усі історії</a></div>{% endif %}
+  {% if pages > 1 %}<nav class="pagination" aria-label="Сторінки статей">{% for number in range(1, pages + 1) %}<a class="{{ 'current' if number == page }}" href="{{ url_for('index', q=query, category=category, sort=sort, page=number) }}#articles" {% if number == page %}aria-current="page"{% endif %}>{{ number }}</a>{% endfor %}</nav>{% endif %}
+</section>
+<section class="container"><div class="join-banner"><div><div class="eyebrow">ТЕПЕР ТВОЯ ЧЕРГА</div><h2>Твоя історія може<br>стати чиїмось відкриттям.</h2><p>Почни з думки. Решта прийде зі словами.</p></div><a class="button" href="{{ url_for('editor') if current_user else url_for('register') }}">Написати першу історію ↗</a></div></section>
+{% endblock %}
